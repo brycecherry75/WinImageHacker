@@ -1,0 +1,32 @@
+All values except Palette Entries are 2 bytes long and are Least Significant Byte first; the start of a header is always aligned on a dword (4 byte) boundary.
+
+Image data is same as BMP format.
+
+For Type 1 images:
+0x00	Header length in bytes (= 12)
+0x02	= 0
+0x04	Width
+0x06	Height
+0x08	= 1
+0x0A	Bit depth
+0x0C	Palette entries (BGR) - 3 bytes each - if image is not 1/4/8 bit, start of image data
+If image is 1/4/8 bit:
+0x0C + ((2 ^ Bit depth) * 3)	Start of image data
+
+For Type 2 images:
+0x00	Header length in bytes (= 40)
+0x02	= 0
+0x04	Width
+0x06	= 0
+0x08	Height
+0x0A	= 0
+0x0C	= 1
+0x0E	Bit depth
+0x10 to 0x12 = 0
+0x14	???
+0x16 to 0x26 = 0
+0x28 Palette entries (BGR with padding) - 4 bytes each - if image is not 1/4/8 bit, start of image data
+If image is 1/4/8 bit:
+0x28 + ((2 ^ Bit depth) * 4)	Start of image data
+
+The top half of cursors is the transparency mask and the bottom half is the actual cursor; for icons, the bottom half is the actual icon and editing the top half including through palette changes will corrupt the program.
